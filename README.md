@@ -1,4 +1,7 @@
 # fullstack-project
-This is a repository, acting currently as a placeholder for my fullstack project that I will be working on this month. Each day, I will work on something and update this repository periodically.
+A study companion app/website. This website uses the YouTube API to load videos on the site.
 
-You may find this README file again by checking the commits history later on once this is completed.
+This website aims to streamline the process of studying using YouTube, by making it more user-centred: Users don't have to log-in to their YouTube accounts. Instead, they will be able to search for videos directly from the search bar itself!
+
+The video loads up on the site as an embedded video, and the video can be saved to a playlist on the browser itself! The data is cached on the browser, so you can watch a video, and tap on the "add to playlist" button to add it to the browser cache. It is persistent, so it won't be removed. 
+
