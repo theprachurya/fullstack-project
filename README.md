@@ -5,3 +5,4 @@ This website aims to streamline the process of studying using YouTube, by making
 
 The video loads up on the site as an embedded video, and the video can be saved to a playlist on the browser itself! The data is cached on the browser, so you can watch a video, and tap on the "add to playlist" button to add it to the browser cache. It is persistent, so it won't be removed. 
 
+Self hosting guide will be released once this project is finished.
