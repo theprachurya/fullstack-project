@@ -15,10 +15,25 @@ async function searchYouTube() {
     const videosResponse = await fetch(videosUrl);
     const videosData = await videosResponse.json();
 
-    const videosWithDuration = searchData.items.map((item, index) => ({
-      ...item,
-      duration: videosData.items[index].contentDetails.duration
-    }));
+    // Map search results to video details, filtering out unavailable videos
+    const videosWithDuration = searchData.items
+      .map((item, index) => {
+        const videoDetail = videosData.items.find(v => v.id === item.id.videoId);
+        if (!videoDetail) {
+          console.warn(`Video ${item.id.videoId} not found in videos.list response`);
+          return null; // Skip this video
+        }
+        return {
+          ...item,
+          duration: videoDetail.contentDetails.duration
+        };
+      })
+      .filter(video => video !== null); // Remove null entries
+
+    if (videosWithDuration.length === 0) {
+      throw new Error('No valid video details retrieved');
+    }
+
     displayResults(videosWithDuration);
   } catch (error) {
     console.error('Error fetching data:', error);
@@ -119,7 +134,7 @@ function displayResults(videos) {
     videoDiv.dataset.thumbnail = thumbnail;
   });
 
-  displayPlaylist(); // Safe to call after DOM is ready
+  displayPlaylist();
 }
 
 function addToPlaylist(video) {
@@ -142,7 +157,7 @@ function displayPlaylist() {
   const playlistDiv = document.getElementById('playlist-items');
   if (!playlistDiv) {
     console.error('Playlist container not found');
-    return; // Exit if element is missing
+    return;
   }
 
   playlistDiv.innerHTML = '';
@@ -233,7 +248,6 @@ function formatDuration(isoDuration) {
   return `${minutes}:${String(seconds).padStart(2, '0')}`;
 }
 
-// Wrap all event listeners in DOMContentLoaded
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('themeToggle').addEventListener('click', () => {
     document.body.classList.toggle('dark-mode');
@@ -245,5 +259,5 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  displayPlaylist(); // Initial playlist load
+  displayPlaylist();
 });
